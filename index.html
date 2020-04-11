@@ -4,14 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vuejs Tutorial</title>
+
+    <style>
+        .red {
+            border: 2px solid red;
+        }
+        .blue {
+            border: 2px solid blue;
+        }
+    </style>
 </head>
 <body>
     
 
     <div id="root">
-        <h1>
+        <!-- <h1>
             {{ greetings }}
         </h1>
+        <p v-text="greetings"></p>
+        <p v-html="greetings"></p>
+        <p v-once>{{ greetings }}</p>
         <input v-model='greetings' type="text">
 
         <div v-if="color === 'Green'">
@@ -22,10 +34,26 @@
             red
         </div>
 
-        <input type="text" v-model="email">
+        <input type="text" v-model="email"  :class="{red: email.length < 2}"> single class
+        <input type="text" v-model="email"  :class="[email.length < 2 ? 'red' : 'blue']"> if condition
         <button onclick="alert('singned up')" :disabled="email.length < 2">
             Submit
-        </button>
+        </button> -->
+        {{ kittify }}
+
+        <ul>
+            <input type="text" v-model="newCat" v-on:keyup.enter="addKitty">
+            <button v-on:click="addKitty">
+                + ADD
+            </button>
+            <li v-for="cat in cats">{{ cat }}</li>
+        </ul>
+        <ul>
+            <li v-for="am in animal">{{ am.name }}</li>
+        </ul>
+
+
+        <cat-list :animal="animal"></cat-list>
 
     </div>
 
@@ -33,12 +61,55 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
-        new Vue({
+
+        Vue.component('cat-list', {
+            props: ['animal'],
+            template: `
+                <ul>
+                <li v-for="am in animal">{{ am.name }}</li>
+                </ul>
+            `
+        })
+
+        app = new Vue({
             el: '#root',
             data: {
                 greetings: "Hello Vue",
                 color: "Grdeen",
-                email: ""
+                email: "",
+                cats: [
+                    'kit',
+                    'sam',
+                    'dim',
+                    'tif'
+                ],
+
+                animal: [
+                    { name:'Tiger' },
+                    { name:'Cat' },
+                    { name:'Dog' }
+                ],
+                newCat: ""
+            },
+            methods: {
+                addKitty: function() {
+                    this.animal.push({name: this.newCat});
+                    this.newCat ='';
+                }
+            }, 
+            filters: {
+                capitalize: function(value) {
+                    return value.toUpperCase();
+                }
+               
+            },
+
+            computed:{
+                kittify: function() {
+                    if(this.newCat.length > 1) {
+                        return this.newCat + 'y';
+                    }
+                }
             }
         })
     </script>

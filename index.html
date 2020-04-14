@@ -110,8 +110,31 @@
                         return this.newCat + 'y';
                     }
                 }
+            },
+
+
+            created: function() {
+                console.log('Created');
+            },
+
+            mounted: function() {
+                console.log('Mounted');
+            },
+
+            updated: function() {
+                console.log('Updated');
+            },
+
+            destroyed: function() {
+                console.log('Destroyed');
             }
+
+
         })
+
+        setTimeout(function() {
+            app.$destroy();
+        }, 5000);
     </script>
 </body>
 </html>
